@@ -158,8 +158,9 @@ while True:
     curr_bulk = []
 
     try:
-        sock = socket.socket()
-        sock.connect((graphite, int(graphite_port)))
+        family, _, _, _, addr = socket.getaddrinfo(graphite, int(graphite_port), socket.AF_INET, socket.SOCK_DGRAM)[0]
+        sock = socket.socket(family, socket.SOCK_DGRAM)
+        sock.connect(addr)
 
         for metric in to_graphite:
             curr_bulk.append(metric)
